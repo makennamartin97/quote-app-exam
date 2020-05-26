@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Quotes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        #quotes{
+            border: 7px solid #6464ff;
+            display: inline-block;
+            height: 500px;
+            width: 300px;
+            position:relative;
+            overflow-y:auto;
+            margin-bottom: 200px;
+            border-radius: 10px;
+            padding: 15px;
+            
+        }
+        #favorites{
+            border: 7px solid #6464ff;
+            display: inline-block;
+            height: 500px;
+            width: 300px;
+            overflow-y:auto;
+            position: relative;
+            margin-bottom: 200px;
+            border-radius: 10px;
+            padding: 15px;
+        
+        }
+        #addquote{
+            border: 7px solid #6464ff;
+            display:inline-block;
+            height: 500px;
+            width: 300px;
+            position: relative;
+            margin-bottom: 200px;
+            overflow-y:auto;
+            border-radius: 10px;
+            padding: 15px;
+            
+    
+        }
+        .header {
+            display: inline-block;
+            height: 80px;
+            width: 2000px;
+
+
+        }
+        h1 {
+            display: inline-block;
+            font-size: 25px;
+        }
+        h2{
+            color: black;
+            font-size: 25px;
+            text-decoration:underline ;
+        }
+        h3{
+            font-size: 20px;
+        }
+       
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="row" class="header">
+        <h1>Welcome back, {{loggedinuser.firstname}}!</h1>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="col-sm" id="quotes">
+        <h2>Quotable Quotes</h2>
+        {% for quotes in allquotes %}
+        <h3>Posted by:</h3>
+        <p><a href="/user/{{quotes.uploader.id}}">{{quotes.uploader.firstname}}</a></p>
+        <h3>Quoted By:</h3>
+        <p>{{quotes.quotedby}}</p>
+        <h3>Quote:</h3>
+        <p>{{quotes.quotemessage}}</p>
+        <form action="addtofavorites/{{quotes.id}}" method="POST">
+            {% csrf_token %}
+        <!--<input type="submit" value="Add to favorites" id="Add to favorites">-->
+        <button class="btn btn-primary lift">Add to favorites</button>
+        </form>
+            {% if loggedinuser == quotes.uploader %}
+                <a href="/delete/{{quotes.id}}">Delete |</a>
+                <a href="/quotes/{{quotes.id}}">  Edit</a>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+    <div class="col-sm" id="favorites" >
+        <h2>Your Quotes and Favorites</h2>
+        {% for quotesobj in myquotes %}
+        <h3>Quoted By:</h3>
+        <p>{{quotesobj.quotedby}}</p>
+        <h3>Posted By:</h3>
+        <p>{{quotesobj.uploader.firstname}}</p>
+        <h3>Quote:</h3>
+        <p>{{quotesobj.quotemessage}}</p>
+        {% if loggedinuser == quotesobj.uploader %}
+            <form action="/delete/{{quotesobj.id}}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-primary lift">Delete</button>
+            </form>
+            {% else %}
+            <form action="/removefromfavorites/{{quotesobj.id}}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-primary lift">Remove from my favorites</button>
+            </form>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+    <div class="col-sm" id="addquote">
+        <h2>Contribute a Quote</h2>
+            {% if messages %}
+                {% for message in messages %}
+                <p style="color: red;">{{ message }}</p> 
+                {% endfor %}
+            {% endif %}
+        <form action="/uploadquote" method="post">
+            {% csrf_token %}
+            <label>Quoted By:</label>
+            <input type="text" name="quoter" id=""></br>
+            <label>Quote:</label>
+            <input type="text" name="message" id=""></br>
+            <input type="submit" name="submit" id="">
+        </form>
+    </div>
+    </div>
+
+
+
+
+
+
+</body>
+</html>

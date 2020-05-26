@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Quotes</title>
+    <style>
+        h3{
+            font-size: 40px;
+            text-align: center;
+        }
+        p{
+            font-style: italic;
+            font-size: 30px;
+            text-align: center;
+        }
+        #logout{
+            position: relative;
+            margin-left: 1300px;
+        }
+        .main{
+            border: 7px solid #6464ff;
+            border-radius: 10px;
+
+        
+           
+        }
+    
+    </style>
+</head>
+<body>
+    <a href="/quotes">Dashboard</a>
+    <a id="logout" href="/logout">Logout</a>
+    <div class="main">
+    <h3>Posts by: {{getuser.firstname}}</h3>
+    {% for quote in allquotes %}
+    <p>{{quote.quoter}}</p>
+    <p>{{quote.quotemessage}}</p>
+    {% endfor %}
+    </div>
+
+
+</body>
+</html>
