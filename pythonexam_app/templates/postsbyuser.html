@@ -22,9 +22,9 @@
         .main{
             border: 7px solid #6464ff;
             border-radius: 10px;
-
-        
-           
+        }
+        h4{
+            text-align:center
         }
     
     </style>
@@ -35,8 +35,8 @@
     <div class="main">
     <h3>Posts by: {{getuser.firstname}}</h3>
     {% for quote in allquotes %}
-    <p>{{quote.quoter}}</p>
     <p>{{quote.quotemessage}}</p>
+    <h4>{{quote.quotedby}}</h4>
     {% endfor %}
     </div>
 
